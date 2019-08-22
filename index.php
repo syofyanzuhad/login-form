@@ -3,7 +3,7 @@
 require('Controller log.php');
 if (isset($_POST['Daftar'])) {
   $nama = $_POST['Name'];
-  $password = $_POST['Password'];
+  $password = sha1($_POST['Password']);
   $email = $_POST['Email'];
   $gender = $_POST['Gender'];
 
@@ -12,8 +12,7 @@ if (isset($_POST['Daftar'])) {
   if ($register == "Success") {
     header('Location: index.php');
   }
-} 
-elseif (isset($_POST['masuk'])) {
+} elseif (isset($_POST['masuk'])) {
   $namain = $_POST['nama'];
   $passin = $_POST['password'];
 
@@ -25,20 +24,29 @@ elseif (isset($_POST['masuk'])) {
   if ($result->username == $namain) {
     if ($result->pass == $passin) {
       header('Location: Beranda.php');
-    } 
-    else {
+    } else {
       echo "" ?> <div class="alert alert-danger fixed-top text-center" role="alert">LOGIN FAILED ! (wrong password !)</div> <?php
-      }
-  } 
-  else {
-      echo "" ?> <div class="alert alert-danger fixed-top text-center" role="alert">LOGIN FAILED ! (wrong username !)</div> <?php
     }
-} 
-elseif (isset($_POST['message'])) {
+  } else {
+    echo "" ?> <div class="alert alert-danger fixed-top text-center" role="alert">LOGIN FAILED ! (wrong username !)</div> <?php
+  }
+} elseif (isset($_POST['message'])) {
   $namestr = $_POST['namestr'];
   $emailstr = $_POST['emailstr'];
   $messagestr = $_POST['pesan'];
-  
+
+  $to = "sofyanzuhad2@gmail.com";
+  $subject = "Message From Stranger";
+  $message = "Name : ".$namestr."\n"."SEND YOU A MESSAGE !"."\n".$messagestr;
+  $headers = "From: ". $emailstr . "\r\n";
+  echo $headers;
+
+    if (mail($to, $subject, $message, $headers)) {
+      echo "" ?> <div class="alert alert-success fixed-top text-center" role="alert">EMAIL SENDED ! Thank You !</div> <?php
+    } else {
+      echo "" ?> <div class="alert alert-danger  text-center" role="alert">EMAIL FAILED ! (correct your email !)</div> <?php
+      echo  $headers;
+    }
 }
 
 ?>
@@ -154,7 +162,7 @@ elseif (isset($_POST['message'])) {
 
                   <!-- CONTACT -->
                   <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-                    <form>
+                    <form method="post" action="index.php">
                       <div class="form-group ">
                         <label for="name">Nama</label>
                         <input type="name" class="form-control" name="namestr" id="name" placeholder="Enter your name">
