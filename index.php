@@ -21,66 +21,66 @@ if (isset($_POST['Daftar'])) {
     $register = $daftar->register($nama, $password, $email, $gender);
     if ($register == "Success") {
       echo "" ?> <div class="alert alert-success  text-center" role="alert">REGISTRATION SUCCESS !</div> <?php
-                                                                                                                // header('Location: index.php');
-                                                                                                              } else {
-                                                                                                                echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED (Correct your email !) !</div> <?php
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                              } else {
-                                                                                                                                                                                                                                echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED ! (every element must be writed !)</div> <?php
-                                                                                                                                                                                                                                              }
-                                                                                                                                                                                                                                            }
+    // header('Location: index.php');
+    } else {
+        echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED (Correct your email !) !</div> <?php
+      }
+  } else {
+    echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED ! (every element must be writed !)</div> <?php
+  }
+}
 
-                                                                                                                                                                                                                                            if (isset($_POST['masuk'])) {
-                                                                                                                                                                                                                                              if (!empty($_POST['nama']) || !empty($_POST['password'])) {
-                                                                                                                                                                                                                                                $namain = $_POST['nama'];
-                                                                                                                                                                                                                                                $passin = $_POST['password'];
+if (isset($_POST['masuk'])) {
+  if (!empty($_POST['nama']) || !empty($_POST['password'])) {
+    $namain = $_POST['nama'];
+    $passin = $_POST['password'];
 
-                                                                                                                                                                                                                                                if (isset($_POST['ingat'])) {
-                                                                                                                                                                                                                                                  setcookie("user", $namain, time() + 60);
-                                                                                                                                                                                                                                                }
+    if (isset($_POST['ingat'])) {
+      setcookie("user", $namain, time() + 60);
+    }
 
 
-                                                                                                                                                                                                                                                $login = new Controller();
-                                                                                                                                                                                                                                                $masuk = $login->logname($namain);
-                                                                                                                                                                                                                                                $result = $masuk->fetch(PDO::FETCH_OBJ);
-                                                                                                                                                                                                                                                // print_r($result->pass);
+    $login = new Controller();
+    $masuk = $login->logname($namain);
+    $result = $masuk->fetch(PDO::FETCH_OBJ);
+    // print_r($result->pass);
 
-                                                                                                                                                                                                                                                if ($result->username == $namain) {
-                                                                                                                                                                                                                                                  if (password_verify($passin, $result->pass)) {
-                                                                                                                                                                                                                                                    $_SESSION['nama'] = $_POST['nama'];
-                                                                                                                                                                                                                                                    header('Location: Beranda.php');
-                                                                                                                                                                                                                                                  } else {
-                                                                                                                                                                                                                                                    echo "" ?> <div class="alert alert-danger  text-center" role="alert">LOGIN FAILED ! (wrong password !)</div> <?php
-                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                      } else {
-                                                                                                                                                                                                                                                        echo "" ?> <div class="alert alert-danger fixed-top text-center" role="alert">LOGIN FAILED ! (wrong username !)</div> <?php
-                                                                                                                                                                                                                                                      }
-                                                                                                                                                                                                                                                    } else {
-                                                                                                                                                                                                                                                      echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED ! (every element must be writed !)</div> <?php
-                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                      }
+    if ($result->username == $namain) {
+      if (password_verify($passin, $result->pass)) {
+        $_SESSION['nama'] = $_POST['nama'];
+        header('Location: Beranda.php');
+      } else {
+        echo "" ?> <div class="alert alert-danger  text-center" role="alert">LOGIN FAILED ! (wrong password !)</div> <?php
+        }
+      } else {
+        echo "" ?> <div class="alert alert-danger fixed-top text-center" role="alert">LOGIN FAILED ! (wrong username !)</div> <?php
+        }
+  } else {
+    echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED ! (every element must be writed !)</div> <?php
+      }
+}
 
-                                                                                                                                                                                                                                                      if (isset($_POST['message'])) {
-                                                                                                                                                                                                                                                        if (!empty($_POST['namestr']) || !empty($_POST['emailstr']) || !empty($_POST['pesan'])) {
-                                                                                                                                                                                                                                                          $namestr = $_POST['namestr'];
-                                                                                                                                                                                                                                                          $emailstr = $_POST['emailstr'];
-                                                                                                                                                                                                                                                          $messagestr = $_POST['pesan'];
+if (isset($_POST['message'])) {
+  if (!empty($_POST['namestr']) || !empty($_POST['emailstr']) || !empty($_POST['pesan'])) {
+    $namestr = $_POST['namestr'];
+    $emailstr = $_POST['emailstr'];
+    $messagestr = $_POST['pesan'];
 
-                                                                                                                                                                                                                                                          $to = "sofyanzuhad2@gmail.com";
-                                                                                                                                                                                                                                                          $subject = "Message From Stranger";
-                                                                                                                                                                                                                                                          $message = "Name : " . $namestr . "\n" . "SEND YOU A MESSAGE !" . "\n" . "Message :" . "\n" . $messagestr;
-                                                                                                                                                                                                                                                          $headers = "From: " . $emailstr . "\r\n";
-                                                                                                                                                                                                                                                          if (mail($to, $subject, $message)) {
-                                                                                                                                                                                                                                                            echo "" ?> <div class="alert alert-success fixed-top text-center" role="alert">EMAIL SENDED ! Thank You !</div> <?php
-                                                                                                                                                                                                                                                      } else {
-                                                                                                                                                                                                                                                        echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED ! (correct your email !)</div> <?php
-                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                          } else {
-                                                                                                                                                                                                                                            echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED ! (every element must be writed !)</div> <?php
-                                                                                                                                                                                                                                              }
-                                                                                                                                                                                                                                            }
+    $to = "sofyanzuhad2@gmail.com";
+    $subject = "Message From Stranger";
+    $message = "Name : " . $namestr . "\n" . "SEND YOU A MESSAGE !" . "\n" . "Message :" . "\n" . $messagestr;
+    $headers = "From: " . $emailstr . "\r\n";
+    if (mail($to, $subject, $message)) {
+      echo "" ?> <div class="alert alert-success fixed-top text-center" role="alert">EMAIL SENDED ! Thank You !</div> <?php
+  } else {
+    echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED ! (correct your email !)</div> <?php
+    }
+  } else {
+    echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED ! (every element must be writed !)</div> <?php
+    }
+}
 
-                                                                                                                                                                                                                                            ?>
+?>
 
 <html>
 
