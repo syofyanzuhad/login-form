@@ -1,3 +1,13 @@
+<?php
+session_start();
+if ($_SESSION['nama'] === null) {
+    header('Location: index.php');
+} else {
+    $nama = $_SESSION['nama'];
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
