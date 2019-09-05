@@ -20,76 +20,123 @@ if (isset($_POST['Daftar'])) {
     $daftar = new Controller();
     $register = $daftar->register($nama, $password, $email, $gender);
     if ($register == "Success") {
-      echo "" ?> <div class="alert alert-success  text-center" role="alert">REGISTRATION SUCCESS !</div> <?php
-    // header('Location: index.php');
-    } else {
-        echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED (Correct your email !) !</div> <?php
-      }
-  } else {
-    echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED ! (every element must be writed !)</div> <?php
-  }
-}
-
-if (isset($_POST['masuk'])) {
-  if (!empty($_POST['nama']) || !empty($_POST['password'])) {
-    $namain = $_POST['nama'];
-    $passin = $_POST['password'];
-
-    if (isset($_POST['ingat'])) {
-      setcookie("user", $namain, time() + 60);
-    }
-
-
-    $login = new Controller();
-    $masuk = $login->logname($namain);
-    $result = $masuk->fetch(PDO::FETCH_OBJ);
-    // print_r($result->pass);
-
-    if ($result->username == $namain) {
-      if (password_verify($passin, $result->pass)) {
-        $_SESSION['nama'] = $_POST['nama'];
-        header('Location: Beranda.php');
-      } else {
-        echo "" ?> <div class="alert alert-danger  text-center" role="alert">LOGIN FAILED ! (wrong password !)</div> <?php
+      echo "" ?>
+      <div class="alert alert-success  text-center" role="alert">REGISTRATION SUCCESS !
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    <?php
+          // header('Location: index.php');
+        } else {
+          echo "" ?>
+      <div class="alert alert-danger  text-center" role="alert">FAILED (Correct your email !) !
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    <?php
         }
       } else {
-        echo "" ?> <div class="alert alert-danger fixed-top text-center" role="alert">LOGIN FAILED ! (wrong username !)</div> <?php
-        }
-  } else {
-    echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED ! (every element must be writed !)</div> <?php
+        echo "" ?>
+    <div class="alert alert-danger  text-center" role="alert">FAILED ! (every element must be writed !)
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <?php
       }
-}
-
-if (isset($_POST['message'])) {
-  if (!empty($_POST['namestr']) || !empty($_POST['emailstr']) || !empty($_POST['pesan'])) {
-    $namestr = $_POST['namestr'];
-    $emailstr = $_POST['emailstr'];
-    $messagestr = $_POST['pesan'];
-
-    $to = "sofyanzuhad2@gmail.com";
-    $subject = "Message From Stranger";
-    $message = "Name : " . $namestr . "\n" . "SEND YOU A MESSAGE !" . "\n" . "Message :" . "\n" . $messagestr;
-    $headers = "From: " . $emailstr . "\r\n";
-    if (mail($to, $subject, $message)) {
-      echo "" ?> <div class="alert alert-success fixed-top text-center" role="alert">EMAIL SENDED ! Thank You !</div> <?php
-  } else {
-    echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED ! (correct your email !)</div> <?php
     }
-  } else {
-    echo "" ?> <div class="alert alert-danger  text-center" role="alert">FAILED ! (every element must be writed !)</div> <?php
-    }
-}
 
-?>
+    if (isset($_POST['masuk'])) {
+      if (!empty($_POST['nama']) || !empty($_POST['password'])) {
+        $namain = $_POST['nama'];
+        $passin = $_POST['password'];
 
+        if (isset($_POST['ingat'])) {
+          setcookie("user", $namain, time() + 60);
+        }
+
+        $login = new Controller();
+        $masuk = $login->logname($namain);
+        $result = $masuk->fetch(PDO::FETCH_OBJ);
+        // print_r($result->pass);
+
+        if ($result->username == $namain) {
+          if ($passin == $result->password || password_verify($passin, $result->password)) {
+            $_SESSION['id'] = $result->id;
+            $_SESSION['nama'] = $_POST['nama'];
+            header('Location: Posting.php');
+          } else {
+            echo "" ?>
+        <div class="alert alert-danger  text-center" role="alert">LOGIN FAILED ! (wrong password !)
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> <?php
+                      }
+                    } else {
+                      echo "" ?>
+      <div class="alert alert-danger fixed-top text-center" role="alert">LOGIN FAILED ! (wrong username !)
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> <?php
+                  }
+                } else {
+                  echo "" ?>
+    <div class="alert alert-danger  text-center" role="alert">FAILED ! (every element must be writed !)
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div> <?php
+              }
+            }
+
+            if (isset($_POST['message'])) {
+              if (!empty($_POST['namestr']) || !empty($_POST['emailstr']) || !empty($_POST['pesan'])) {
+                $namestr = $_POST['namestr'];
+                $emailstr = $_POST['emailstr'];
+                $messagestr = $_POST['pesan'];
+
+                $to = "sofyanzuhad2@gmail.com";
+                $subject = "Message From Stranger";
+                $message = "Name : " . $namestr . "\n" . "SEND YOU A MESSAGE !" . "\n" . "Message :" . "\n" . $messagestr;
+                $headers = "From: " . $emailstr . "\r\n";
+                if (mail($to, $subject, $message)) {
+                  echo "" ?>
+      <div class="alert alert-success fixed-top text-center" role="alert">EMAIL SENDED ! Thank You !
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> <?php
+                  } else {
+                    echo "" ?>
+      <div class="alert alert-danger  text-center" role="alert">FAILED ! (correct your email !)
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> <?php
+                  }
+                } else {
+                  echo "" ?>
+    <div class="alert alert-danger  text-center" role="alert">FAILED ! (every element must be writed !)
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div> <?php
+              }
+            }
+            ?>
 <html>
 
 <head>
 
   <!-- Titel Browser -->
-  <title>Halaman Login Blog</title>
+  <title>Halaman Login </title>
 
-  <!-- Bootstrap CSS offline-->
+  <!-- Bootstrap CSS offline -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/bootstrap-grid.css">
@@ -108,6 +155,29 @@ if (isset($_POST['message'])) {
     .header {
       margin-bottom: 50px;
     }
+
+    body {
+      background: url('img/login.jpg');
+    }
+
+    .card .card-body {
+      position: relative;
+    }
+
+    .card::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 1);
+      position: absolute;
+      border-radius: 2%;
+      opacity: 0.6;
+    }
+
+    small {
+      -webkit-text-fill-color: royalblue;
+    }
   </style>
 
 </head>
@@ -116,16 +186,16 @@ if (isset($_POST['message'])) {
 
   <section class="login " id="main-page">
     <!-- Container -->
-    <div class="container text-center">
+    <div class="container text-center text-light">
       <h1 class="header ">Selamat Datang !</h1>
       <!-- ROW -->
       <div class="row justify-content-center ">
         <div class="col-md-5 ">
           <!-- Card -->
-          <div class="card shadow mb-5 bg-white rounded text-center ">
+          <div class="card shadow mb-5 bg-transparent rounded text-center ">
             <div class="card-header">
               <div class="card-body text-left ">
-                <!-- Navbar -->
+                <!-- Navbar Card -->
                 <ul class="nav nav-pills mb-3 " id="pills-tab" role="tablist">
                   <li class="nav-item">
                     <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#home" role="tab" aria-controls="pills-home" aria-selected="true">Login</a>
@@ -228,11 +298,11 @@ if (isset($_POST['message'])) {
 </body>
 <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
- -->
-  
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+<!-- Bootstrap script offline -->
 <script src="js/jquery-3.3.1.slim.min.js"></script>
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/bootstrap.min.js"></script>
+
 </html>
