@@ -1,5 +1,11 @@
 <?php
 
+if (isset($_SESSION['nama'])) {
+  if (!empty($_SESSION['nama'])) {
+    header('Location: Beranda.php');
+  }
+}
+
 require('Controller log.php');
 if (isset($_POST['Daftar'])) {
   $nama = $_POST['Name'];
