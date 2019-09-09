@@ -1,4 +1,4 @@
-
+<?php
 
 require('Controller log.php');
 if (isset($_POST['Daftar'])) {
